@@ -6,46 +6,24 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-let posts = [];
+// Import the routes for posts
+const postsRoutes = require("./routes/getPosts");
+const putPostsRoutes = require("./routes/putPosts");
+const delPostsRoutes = require("./routes/delPosts");
+
+// Use the routes for /posts
+app.use("/posts", postsRoutes);
+app.use("/posts", putPostsRoutes);
+app.use("/posts", delPostsRoutes);
 
 app.get("/", (req, res) => {
-    res.send({ message: "hello world"})
-})
-
-app.get("/posts", (req, res) =>{
-    res.json(posts);
-});
-
-app.post("/posts", (req, res) => {
-    const { title, content } = req.body;
-    if (!title || !content) {
-        return res.status(400).json({error: "Title and content are required" });
-    }
-
-    const newPost = {
-        id: posts.length +1,
-        title,
-        content,
-        createdAt: new Date()
-    };
-    posts.push(newPost);
-    res.status(201).json(newPost);
-});
-
-app.get("/posts/:id", (req, res) => {
-    const postId = parseInt(req.params.id, 10);
-    const post = posts.find(p => p.id === postId);
-    if (!post) {
-        return res.status(404).json({ error: "Post not found" });
-    }
-    res.json(post);
+    res.send({ message: "hello world" });
 });
 
 app.listen(port, (err) => {
-    if(!err) {
-        console.log(`server running on port ${port}`);
-    }
-    else{
-        console.error(err)
+    if (!err) {
+        console.log(`Server running on port ${port}`);
+    } else {
+        console.error(err);
     }
 });
