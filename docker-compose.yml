@@ -2,7 +2,9 @@ version: "3.2"
 
 services:
   api:
-    build: ./images/api
+    build: 
+      context: ./images/api
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
@@ -19,5 +21,12 @@ services:
       POSTGRES_PASSWORD: 
       POSTGRES_DB: 
       POSTGRES_HOST_AUTH_METHOD: 
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
     
   
